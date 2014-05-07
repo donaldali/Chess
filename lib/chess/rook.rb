@@ -3,8 +3,9 @@ require_relative 'piece'
 #
 class Rook < Piece
 	attr_accessor :moved
-	
-	def initialize
+
+	def initialize(color, position, chessboard)
+	 	super(color, position, :rook, chessboard)
 		@moved = false
 	end
 

@@ -2,11 +2,12 @@ require_relative 'piece'
 
 #
 class Knight < Piece
+	def initialize(color, position, chessboard)
+  	super(color, position, :knight, chessboard)
+	end
+
 	def possible_positions
-		# ***************************
-		# *** REPLACE piece_color ***
-		# ***************************
-		piece_colors = @chessboard
+		piece_colors = @chessboard.get_piece_colors
 
 		knight_positions.select do |position| 
 			board_position?(position) && piece_colors[position[0]][position[1]] != @color

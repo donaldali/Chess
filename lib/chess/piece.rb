@@ -1,16 +1,40 @@
+require_relative 'chess_module'
+
+
 #
 class Piece
-	attr_accessor :color, :position, :type, :chessboard
-
-	SIZE = 8
+	SIZE = Chess::SIZE
+	# SIZE = 8
 	DIR_CHANGE = { north: [-1, 0], ne: [-1, 1], east: [0,  1], se: [1,   1],
 		             south: [ 1, 0], sw: [1, -1], west: [0, -1], nw: [-1, -1] }
 
+	attr_accessor :color, :position, :type, :chessboard
+
+	def self.create(color, position, type, chessboard)
+  	case type
+  	when :king   then King.new(color, position, chessboard)
+  	when :queen  then Queen.new(color, position, chessboard)
+  	when :bishop then Bishop.new(color, position, chessboard)
+  	when :rook   then Rook.new(color, position, chessboard)
+  	when :knight then Knight.new(color, position, chessboard)
+  	when :pawn   then Pawn.new(color, position, chessboard)
+  	else Piece.new(:clear)
+  	end
+  end
+  
+  def initialize(color = nil, position = nil, type = nil, chessboard = nil)
+  	@color = color
+  	@position = position
+  	@type = type
+  	@chessboard = chessboard
+  end
+
+  def to_s
+  	"Type: #{@type.to_s.upcase}, Color: #{@color}, Position: #{@position}"
+  end
+
 	def move_once_towards(directions)
-		# ***************************
-		# *** REPLACE piece_color ***
-		# ***************************
-		piece_colors = @chessboard
+		piece_colors = @chessboard.get_piece_colors
 
 	  positions = []
 	  directions.each do |direction|
@@ -24,17 +48,14 @@ class Piece
 	end
 
 	def positions_towards(directions)
-		# ***************************
-		# *** REPLACE piece_color ***
-		# ***************************
-		piece_colors = @chessboard
+		piece_colors = @chessboard.get_piece_colors
 
 	  positions = []
 	  directions.each do |direction|
 	  	next_position = add_positions(@position, DIR_CHANGE[direction])
 	  	while board_position?(next_position)
 	  		case piece_colors[next_position[0]][next_position[1]]
-	  		when nil    then positions << next_position # no piece
+	  		when :clear then positions << next_position # no piece
 	  		when @color then break                      # player's piece
 	  		else positions << next_position; break      # opponent's piece
 	  		end

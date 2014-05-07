@@ -4,15 +4,13 @@ require_relative 'piece'
 class Pawn < Piece
 	attr_accessor :moved
 
-	def initialize
+	def initialize(color, position, chessboard)
+  	super(color, position, :pawn, chessboard)
 		@moved = false
 	end
 	
 	def possible_positions
-		# ***************************
-		# *** REPLACE piece_color ***
-		# ***************************
-		piece_colors = @chessboard
+		piece_colors = @chessboard.get_piece_colors
 
 		positions = []
 		row_change = @color == :white ? -1 : 1
@@ -23,11 +21,12 @@ class Pawn < Piece
 
 	def forward_positions(piece_colors, positions, row_change)
 		next_position = add_positions(@position, [row_change, 0])
-		if board_position?(next_position) && piece_colors[next_position[0]][next_position[1]].nil?
+		if board_position?(next_position) && 
+			 piece_colors[next_position[0]][next_position[1]] == :clear
 			positions << next_position
 			next_position = add_positions(next_position, [row_change, 0])
 			if !@moved && board_position?(next_position) && 
-				            piece_colors[next_position[0]][next_position[1]].nil?
+				            piece_colors[next_position[0]][next_position[1]] == :clear
 			  positions << next_position
 			end
 		end
@@ -40,12 +39,14 @@ class Pawn < Piece
 
 	def one_diagonal_position(piece_colors, positions, row_change, col_change)
 		next_position = add_positions(@position, [row_change, col_change])
-		if board_position?(next_position) && piece_colors[next_position[0]][next_position[1]] == other_piece
+		if board_position?(next_position) && 
+			 piece_colors[next_position[0]][next_position[1]] == other_piece
 			positions << next_position
 		end
 		# Check for en passant
-		# if board_position?(next_position) && next_position == chessboard.en_passant_position
-		# 	positions << next_position
-		# end
+		if board_position?(next_position) && 
+			 next_position == chessboard.en_passant_position
+			positions << next_position
+		end
 	end
 end
