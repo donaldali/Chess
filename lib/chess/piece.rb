@@ -33,8 +33,7 @@ class Piece
   # Gives all the positions a piece can legally move to
   def move_positions
   	from = [@position[0], @position[1]]
-  	possible_pos = possible_positions
-  	possible_pos.select do |position|
+  	possible_positions.select do |position|
   		not_check_causing_move?(from, position)
   	end
   end

@@ -124,7 +124,6 @@ class Chessboard
   def positions_attacked_by(player, castling = nil)
   	attacked = []
   	player_pieces(player).each do |piece|
-      # attacked.concat(piece.possible_positions)
       if castling && piece.instance_of?(King)
         attacked.concat(piece.possible_positions(castling))
       else
@@ -146,10 +145,82 @@ class Chessboard
     player_pieces(player).find{ |piece| piece.type == :king }.position
   end
 
+  # Determine if a player's King is in check (under attack by an opponent's piece)
   def check?(player)
     attacked_positions = positions_attacked_by(Chess.other_player(player))
     attacked_positions.include?(king_position(player))    
   end
+
+  # Determine if a player has been checkmated
+  def checkmate?(player)
+    no_valid_move?(player) && check?(player)
+  end
+
+  # Determine if a stalemate condition occurs
+  def stalemate?(player)
+    no_valid_move?(player) && !check?(player)
+  end
+
+  # Determine if a player has no valid move
+  def no_valid_move?(player)
+    player_pieces(player).all? { |piece| piece.move_positions.empty? }
+  end
+
+  def checkmate_impossible?
+    black_type_count = type_count(:black)
+    white_type_count = type_count(:white)
+    black_count = black_type_count.values.reduce(:+)
+    white_count = white_type_count.values.reduce(:+)
+    return false if black_type_count[:other] > 0 || white_type_count[:other] > 0
+    return false if black_type_count[:knight] + white_type_count[:knight] > 1
+
+    if black_count == 1 && white_count == 1 # King vs King
+      return true
+    elsif (black_count == 1 && white_count == 2) || (white_count == 1 && black_count == 2)
+      return true
+    else
+      return all_bishops_on_same_square_color?
+    end
+  end
+
+  def all_bishops_on_same_square_color?
+    bishop_squares = []
+    @squares.each do |row|
+      row.each do |square|
+        bishop_squares << square if square.piece.type == :bishop
+      end
+    end
+    square_color = bishop_squares.first.color
+    bishop_squares.all? { |bishop_square| bishop_square.color == square_color }
+  end
+
+  def type_count player
+    count = { knight: 0, bishop: 0, king: 0, other: 0 }
+    player_pieces(player).each do |piece|
+      case piece.type
+      when :knight then count[:knight] += 1
+      when :bishop then count[:bishop] += 1
+      when :king   then count[:king]   += 1
+      else count[:other] += 1
+      end
+    end
+    count
+  end
+
+  def board_state
+    pieces = []
+    @squares.each do |row|
+      row.each do |square|
+        unless square.piece.color == :clear
+          piece = square.piece
+          pieces << [piece.color, piece.position, piece.type]
+        end
+      end
+    end
+    [pieces, @en_passant_position, get_castle_direction]    
+  end
+
+
 
   # Determine which directions the Kings can castle on the current board
   # The first element of the return value is an array stating if the black 
@@ -272,7 +343,6 @@ class Chessboard
 		@squares.each_with_index do |row, row_index|
 			board_str += "#{ranks[row_index]}"
 			row.each do |square|
-        # board_str += colorize(" #{PIECES[square.piece.color].fetch(square.piece.type, ' ')} ",
 				board_str += colorize(" #{PIECES[square.piece.color].fetch(square.piece.type, 'X')} ",
 					                    square_color_code(square.color, square.piece.color))
 			end
@@ -325,9 +395,22 @@ class Chessboard
 	# def print_message message 
 	# 	print message	
 	# end
-
+  def clear_board
+    clear_board = Chessboard.new
+    (0..Chess::SIZE - 1).each do |row|
+      (0..Chess::SIZE - 1).each do |col|
+        clear_board.clear_square([row, col])
+      end
+    end
+    clear_board
+  end
 end
 
+
+chessboard = Chessboard.new.clear_board
+chessboard.set_square([1, 2], King.new(:black, [1, 2], chessboard))
+chessboard.set_square([5, 6], King.new(:white, [5, 6], chessboard))
+p chessboard.board_state
 # cb = Chessboard.new
 # cb.move_piece([6,1],[5,1])
 # cb.display_board

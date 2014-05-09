@@ -8,6 +8,30 @@ describe Chessboard do
 		allow(Chess).to receive(:print)
 	end
 
+	def clear_board
+		clear_board = Chessboard.new
+  	(0..Chess::SIZE - 1).each do |row|
+  		(0..Chess::SIZE - 1).each do |col|
+  			clear_board.clear_square([row, col])
+  		end
+  	end
+  	clear_board
+	end
+
+	def castling_setup
+		chessboard.clear_square([7, 1])
+		chessboard.clear_square([7, 2])
+		chessboard.clear_square([7, 3])
+		chessboard.clear_square([7, 5])
+		chessboard.clear_square([7, 6])
+
+		chessboard.clear_square([0, 1])
+		chessboard.clear_square([0, 2])
+		chessboard.clear_square([0, 3])
+		chessboard.clear_square([0, 5])
+		chessboard.clear_square([0, 6])
+	end
+
 	describe '#new' do 
 		it "creates an #{Chessboard::SIZE} X #{Chessboard::SIZE} array of squares" do 
 			expect(chessboard.squares.size).to eq(Chessboard::SIZE)
@@ -102,19 +126,10 @@ describe Chessboard do
 	end
 
 	describe '#get_castle_direction' do 
-		before(:each) do
-		  chessboard.clear_square([7, 1])
-		  chessboard.clear_square([7, 2])
-		  chessboard.clear_square([7, 3])
-		  chessboard.clear_square([7, 5])
-		  chessboard.clear_square([7, 6])
-
-		  chessboard.clear_square([0, 1])
-		  chessboard.clear_square([0, 2])
-		  chessboard.clear_square([0, 3])
-		  chessboard.clear_square([0, 5])
-		  chessboard.clear_square([0, 6])
+		before(:each) do 
+			castling_setup
 		end
+
 		it 'recognizes initial castle direction' do 
 			new_chessboard = Chessboard.new
 			expect(new_chessboard.get_castle_direction).to eq([[], []])
@@ -215,15 +230,7 @@ describe Chessboard do
 				expect(chessboard.clear_position?([7, 7])).to be_true
 			end
 			it 'handles all castling posibilities' do
-				chessboard.clear_square([7, 1])
-				chessboard.clear_square([7, 2])
-				chessboard.clear_square([7, 3])
-
-				chessboard.clear_square([0, 1])
-				chessboard.clear_square([0, 2])
-				chessboard.clear_square([0, 3])
-				chessboard.clear_square([0, 5])
-				chessboard.clear_square([0, 6])
+				castling_setup
 
 				chessboard.move([0, 4], [0, 6])
 				expect(chessboard.clear_position?([0, 4])).to be_true
@@ -232,8 +239,120 @@ describe Chessboard do
 				expect(chessboard.clear_position?([0, 7])).to be_true
 			end
 		end
-		
-		
+	end
+
+	describe '#checkmate?' do 
+		it 'recognizes checkmate condition' do 
+			chessboard = clear_board
+	  	chessboard.set_square([0, 7], King.new(:black, [0, 7], chessboard))
+	  	chessboard.set_square([2, 7], King.new(:white, [2, 7], chessboard))
+	  	chessboard.set_square([0, 4], Rook.new(:white, [0, 4], chessboard))
+	  	expect(chessboard.checkmate?(:black)).to be_true
+	  	expect(chessboard.checkmate?(:white)).to be_false
+		end
+		it 'knows when checkmate does not exist' do
+	  	expect(chessboard.checkmate?(:white)).to be_false
+	  	expect(chessboard.checkmate?(:black)).to be_false
+		end
+		it 'handles stalemate with all castling conditions' do
+		  castling_setup
+	  	expect(chessboard.checkmate?(:white)).to be_false
+	  	expect(chessboard.checkmate?(:black)).to be_false
+		end
+	end
+
+	describe '#stalemate?' do 
+		it 'recognizes stalemate condition' do 
+			chessboard = clear_board
+	  	chessboard.set_square([0, 7], King.new(:black, [0, 7], chessboard))
+	  	chessboard.set_square([2, 7], King.new(:white, [2, 7], chessboard))
+	  	chessboard.set_square([2, 6], Rook.new(:white, [2, 6], chessboard))
+	  	expect(chessboard.stalemate?(:black)).to be_true
+	  	expect(chessboard.stalemate?(:white)).to be_false
+		end
+		it 'knows when stalemate does not exist' do
+	  	expect(chessboard.stalemate?(:white)).to be_false
+	  	expect(chessboard.stalemate?(:black)).to be_false
+		end
+		it 'handles stalemate with all castling conditions' do
+		  castling_setup
+	  	expect(chessboard.stalemate?(:white)).to be_false
+	  	expect(chessboard.stalemate?(:black)).to be_false
+		end
+	end
+
+	describe '#board_state' do
+		let(:board1) {Chessboard.new}
+		let(:board2) {Chessboard.new}
+
+		it 'creates a consistent board state' do 
+			expect(board1.board_state).to eq(board2.board_state)
+		end
+		it 'creates different states for similar boards' do 
+			board1.move([1, 3], [2, 3])
+			expect(board1.board_state).not_to eq(board2.board_state)
+		end
+		it 'considers state, not history' do 
+			board1.move([0, 4], [4, 4])
+			board1.move([4, 4], [0, 4])
+			expect(board1.board_state).to eq(board2.board_state)
+		end
+	end
+
+	describe '#checkmake_impossible?' do 
+		let(:chessboard) { clear_board }
+		before(:each) do 
+	  	chessboard.set_square([0, 4], King.new(:black, [0, 4], chessboard))
+	  	chessboard.set_square([7, 4], King.new(:white, [7, 4], chessboard))
+	  end
+
+		context 'when only king vs king exists' do 
+			it 'recognizes checkmate is impossible' do 
+				expect(chessboard.checkmate_impossible?).to be_true
+			end
+		end
+		context 'when only king and knight vs king exists' do 
+			it 'recognizes checkmate is impossible with black knight' do 
+				chessboard.set_square([3, 3], Knight.new(:black, [3, 3], chessboard))
+				expect(chessboard.checkmate_impossible?).to be_true
+			end
+			it 'recognizes checkmate is impossible with white knight' do 
+				chessboard.set_square([5, 5], Knight.new(:white, [5, 5], chessboard))
+				expect(chessboard.checkmate_impossible?).to be_true
+			end
+		end
+		context 'when only king and bishop vs king and bishop exists' do 
+			context 'where all bishops are on same square color' do 
+				it 'recognizes checkmate is impossible with one black bishop' do 
+					chessboard.set_square([3, 3], Bishop.new(:black, [3, 3], chessboard))
+					expect(chessboard.checkmate_impossible?).to be_true
+				end
+				it 'recognizes checkmate is impossible with one white bishop' do 
+					chessboard.set_square([3, 3], Bishop.new(:white, [3, 3], chessboard))
+					expect(chessboard.checkmate_impossible?).to be_true
+				end
+				it 'recognizes checkmate is impossible with multiple bishops' do 
+					chessboard.set_square([2, 2], Bishop.new(:white, [2, 2], chessboard))
+					chessboard.set_square([3, 3], Bishop.new(:black, [3, 3], chessboard))
+					chessboard.set_square([4, 4], Bishop.new(:white, [4, 4], chessboard))
+					chessboard.set_square([5, 5], Bishop.new(:black, [5, 5], chessboard))
+					expect(chessboard.checkmate_impossible?).to be_true
+				end
+			end
+			context 'where bishops are on different square colors' do 
+				it 'recognizes checkmate is possible' do 
+					chessboard.set_square([2, 2], Bishop.new(:white, [2, 2], chessboard))
+					chessboard.set_square([2, 3], Bishop.new(:black, [2, 3], chessboard))
+					expect(chessboard.checkmate_impossible?).to be_false
+				end
+			end
+		end
+		context 'when non-knight/non-bishop pieces exists' do
+			it 'recognizes checkmate is possible' do 
+				chessboard.set_square([2, 3], Queen.new(:black, [2, 3], chessboard))
+				expect(chessboard.checkmate_impossible?).to be_false
+			end
+		end
 	end
 
 end
