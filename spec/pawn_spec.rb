@@ -23,16 +23,16 @@ describe Pawn do
 
 	describe '#possible_positions' do
 		it 'can take one or two steps on first move' do
-			chessboard.set_square(6, 0, white_pawn)
+			chessboard.set_square([6, 0], white_pawn)
 			expect(white_pawn.possible_positions).to match_array([[5, 0], [4, 0], [5, 1]])
 	  end
 	  it 'can take only one step after first move' do
-			chessboard.set_square(4, 4, black_pawn)
+			chessboard.set_square([4, 4], black_pawn)
 			black_pawn.moved = true
 			expect(black_pawn.possible_positions).to match_array([[5, 4], [5, 3]])
 	  end
 	  it 'includes en passant' do
-			chessboard.set_square(3, 6, white_pawn)
+			chessboard.set_square([3, 6], white_pawn)
 			chessboard.en_passant_position = [2, 5]
 			white_pawn.moved = true
 			expect(white_pawn.possible_positions).to match_array([[2, 5]])

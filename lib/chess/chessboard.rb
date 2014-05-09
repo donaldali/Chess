@@ -23,13 +23,14 @@ class Chessboard
 
   attr_accessor :squares, :en_passant_position, :no_capture_or_pawn_moves
 
-  def initialize
+  def initialize(players = {white: "White Player", black: "Black Player"})
   	@squares = generate_squares
   	set_squares_color_position
   	reset_square_pieces
 
   	@en_passant_position = nil
   	@no_capture_or_pawn_moves = 0
+    @players = players
   end
 
   def generate_squares
@@ -98,14 +99,14 @@ class Chessboard
   	end
   end
 
-  def set_square(row, col, piece)
-  	piece.position = [row, col]
-  	@squares[row][col].piece = piece
+  def set_square(position, piece)
+  	piece.position = [position[0], position[1]]
+  	@squares[position[0]][position[1]].piece = piece
   end
 
-  def clear_square(row, col)
+  def clear_square(position)
   	piece = Piece.new(:clear)
-  	@squares[row][col].piece = piece
+  	@squares[position[0]][position[1]].piece = piece
   end
 
   def get_piece_colors
@@ -120,20 +121,25 @@ class Chessboard
   	end.flatten.select { |piece| piece.color == player }
   end
 
-  def positions_attacked_by(player)
+  def positions_attacked_by(player, castling = nil)
   	attacked = []
   	player_pieces(player).each do |piece|
-  		attacked.concat(piece.possible_positions)
+      # attacked.concat(piece.possible_positions)
+      if castling && piece.instance_of?(King)
+        attacked.concat(piece.possible_positions(castling))
+      else
+        attacked.concat(piece.possible_positions)
+      end
   	end
   	attacked.uniq
   end
 
   def square_at(position)
-  	squares[position[0]][position[1]]
+  	@squares[position[0]][position[1]]
   end
 
   def piece_at(position)
-  	squares[position[0]][position[1]].piece
+  	square_at(position).piece
   end
 
   def king_position(player)
@@ -145,20 +151,149 @@ class Chessboard
     attacked_positions.include?(king_position(player))    
   end
 
+  # Determine which directions the Kings can castle on the current board
+  # The first element of the return value is an array stating if the black 
+  # king can castle to its right and/or left; the second element is a
+  # similar representation for the white king
+  def get_castle_direction
+    black_king = piece_at(king_position(:black))
+    white_king = piece_at(king_position(:white))
+    [black_king.get_castle_direction, white_king.get_castle_direction]
+  end
 
-	def display_board
-		board_str = "\t  a  b  c  d  e  f  g  h \n\t"
+  # Move the piece and return the piece that was at the position moved to
+  def move_piece(from, to)
+    to_piece = piece_at(to)
+    set_square(to, piece_at(from))
+    clear_square(from)
+    to_piece
+  end
+
+  def move(from, to)
+    to_piece = move_piece(from, to)
+    update_moved(to)
+    return if en_passant_capture(to)
+
+    set_en_passant_position(from, to)
+    update_no_capture_or_pawn_moves(to_piece, to)
+    handle_promotion(to)
+    castling_move(from, to)
+  end
+
+  def castling_move(from, to)
+    move_col_change = subtract_positions(from, to)[1].abs
+    if (piece_at(to).type == :king && move_col_change == 2)
+      rook_from_col, rook_to_col = (to[1] == 2) ? [0, 3] : [7, 5]
+      move_piece([to[0], rook_from_col], [to[0], rook_to_col])
+      Chess.display_message "#{@players[piece_at(to).color]} just performed a castling move"
+    end
+  end
+
+  def handle_promotion position
+    row = position[0]
+    if (piece_at(position).type == :pawn && (row == 0 || row == 7))
+      display_board
+      old_piece = piece_at(position)
+      new_piece_type = get_new_piece_type old_piece.color
+      new_piece = Piece.create(old_piece.color, old_piece.position, 
+                               new_piece_type, old_piece.chessboard)
+      set_square(position, new_piece)
+    end
+  end
+
+  def get_new_piece_type player
+    options = %w(Queen Bishop Knight Rook)
+    options_title = "New Piece Type"
+    prompt = "please choose the piece that your pawn will be promoted to"
+    Chess.display_message "#{@players[player]}, " + prompt
+
+    convert_piece_type_choice Chess.get_option_choice(options, options_title)
+  end
+
+  def convert_piece_type_choice choice 
+    case choice
+    when 1 then return :queen
+    when 2 then return :bishop
+    when 3 then return :knight
+    when 4 then return :rook
+    end
+  end
+
+  def update_no_capture_or_pawn_moves(to_piece, to)
+    if (to_piece.color != :clear || piece_at(to).type == :pawn)
+      @no_capture_or_pawn_moves = 0
+    else
+      @no_capture_or_pawn_moves += 1
+    end    
+  end
+
+  def set_en_passant_position(from, to)
+    move_row_change = subtract_positions(from, to)[0].abs
+    if (piece_at(to).type == :pawn && move_row_change == 2)
+      en_passant_position_row = (to[0] == 3) ? 2 : 5
+      @en_passant_position = [en_passant_position_row, to[1]]
+    else
+      @en_passant_position = nil
+    end
+  end
+
+  def update_moved position
+    moved_piece = piece_at(position)
+    case moved_piece.type
+    when :king, :rook, :pawn then moved_piece.moved = true
+    end    
+  end
+
+  def en_passant_capture(to)
+    return unless (to == @en_passant_position && piece_at(to).type == :pawn)
+
+    en_passant_capture_row = (to[0] == 2) ? 3 : 4
+    en_passant_capture_position = [en_passant_capture_row, to[1]]
+
+    clear_square(en_passant_capture_position)
+    Chess.display_message "#{@players[piece_at(to).color]} just captured en passant"
+    @en_passant_position = nil
+    @no_capture_or_pawn_moves = 0
+  end
+
+  def clear_position?(position)
+    piece_at(position).color == :clear
+  end
+
+  # Determine position from subtraction of the rows and columns of two positions
+  def subtract_positions(position1, position2)
+    [position1[0] - position2[0], position1[1] - position2[1]]
+  end
+
+
+	def display_board(player = :white)
+		board_str = "\t  a  b  c  d  e  f  g  h  \n\t"
 		ranks = [8, 7, 6, 5, 4, 3, 2, 1]
 		@squares.each_with_index do |row, row_index|
 			board_str += "#{ranks[row_index]}"
 			row.each do |square|
-				board_str += colorize(" #{PIECES[square.piece.color].fetch(square.piece.type, ' ')} ",
+        # board_str += colorize(" #{PIECES[square.piece.color].fetch(square.piece.type, ' ')} ",
+				board_str += colorize(" #{PIECES[square.piece.color].fetch(square.piece.type, 'X')} ",
 					                    square_color_code(square.color, square.piece.color))
 			end
 			board_str += " #{ranks[row_index]}\n\t"
 		end
-		board_str += "  a  b  c  d  e  f  g  h \n"
-		display_message board_str
+		board_str += "  a  b  c  d  e  f  g  h  \n"
+
+		Chess.display_message player_view(board_str, player)
+  end
+
+  def player_view(board_str, player)
+    return board_str.gsub('X', ' ') if player == :white
+
+    black_view = board_str.split("\n").reverse.map do |row|
+      if row.include?('h')
+        "\t  h  g  f  e  d  c  b  a"
+      else
+        row[0..1] + row[2..-3].split("\e[0m").reverse.join("\e[0m") + "\e[0m" + " #{row[-1]}"
+      end
+    end.join("\n")
+    black_view.gsub('X', ' ')
 	end
 
 	def square_color_code(square_color, piece_color)
@@ -183,9 +318,9 @@ class Chessboard
 		"\033[#{color_code}m#{text}\033[0m"
 	end
 
-	def display_message message 
-		puts message	
-	end
+	# def display_message message 
+	# 	puts message	
+	# end
 
 	# def print_message message 
 	# 	print message	
@@ -194,11 +329,14 @@ class Chessboard
 end
 
 # cb = Chessboard.new
+# cb.move_piece([6,1],[5,1])
+# cb.display_board
+# puts "====================================================="
+# cb.display_board :black
 # pieces = cb.player_pieces(:white)
 # p pieces.map{|p| p.color }
 # p pieces.map{|p| p.position }
 # p pieces.map{|p| p.type }
-# cb.display_board
 # p cb
 # p cb.squares[1][0].piece
 

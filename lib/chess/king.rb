@@ -7,12 +7,15 @@ class King < Piece
 	def initialize(color, position, chessboard)
   	super(color, position, :king, chessboard)
 		@moved = false
+		@castle_direction = []
 	end
 
-	def possible_positions
+	def possible_positions(castling = nil)
 		positions = move_once_towards([:north, :south, :east, :west, :nw, :ne, :se, :sw])
+		return positions if castling 
 
 		handle_castling(positions) unless @moved
+		@castle_direction = []
 		positions
 	end
 
@@ -29,12 +32,14 @@ class King < Piece
 	end
 
 	def add_castling(positions, row, direction)
+# puts "ADDING: #{self}"
 		king_positions = get_positions(direction)
 		clear_positions = king_positions[1..-1]
 		clear_positions << [row, 1] if direction == :left
 
 		if positions_clear?(clear_positions) && none_attacked?(king_positions)
 			positions << king_positions.last
+			@castle_direction << direction
 		end
 	end
 
@@ -46,7 +51,8 @@ class King < Piece
 	end
 
 	def none_attacked?(positions)
-		attacked = @chessboard.positions_attacked_by(other_piece)
+		# attacked = @chessboard.positions_attacked_by(other_piece)
+		attacked = @chessboard.positions_attacked_by(other_piece, :castling)
 		positions.none? { |position| attacked.include?(position) }
 	end
 
@@ -54,5 +60,11 @@ class King < Piece
 		positions.all? do |position| 
 			@chessboard.piece_at(position).color == :clear
 		end
+	end
+
+	def get_castle_direction
+		@castle_direction = []
+		handle_castling([]) unless @moved
+		@castle_direction
 	end
 end

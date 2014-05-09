@@ -13,7 +13,7 @@ class Pawn < Piece
 		piece_colors = @chessboard.get_piece_colors
 
 		positions = []
-		row_change = @color == :white ? -1 : 1
+		row_change = (@color == :white) ? -1 : 1
 		forward_positions( piece_colors, positions, row_change)
 		diagonal_positions(piece_colors, positions, row_change)
 		positions
@@ -45,7 +45,7 @@ class Pawn < Piece
 		end
 		# Check for en passant
 		if board_position?(next_position) && 
-			 next_position == chessboard.en_passant_position
+			 next_position == @chessboard.en_passant_position
 			positions << next_position
 		end
 	end
