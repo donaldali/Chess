@@ -1,6 +1,4 @@
-require_relative 'piece'
-
-#
+# Class to define the properties and movement of a Rook
 class Rook < Piece
 	attr_accessor :moved
 
@@ -9,6 +7,7 @@ class Rook < Piece
 		@moved = false
 	end
 
+  # Determine positions a Rook can go to on a chessboard the Rook is on
 	def possible_positions
 		positions_towards([:north, :south, :east, :west])
 	end

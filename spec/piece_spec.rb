@@ -1,24 +1,26 @@
-#
-require_relative '../lib/chess/piece'
-require_relative '../lib/chess/chessboard'
+require 'spec_helper'
 
 describe Piece do 
-	# let(:piece_colors) {
-	#    [ [:black, :black, :black, :black, :black, :black, :black, :black],
-	# 	   [:black, :black, :black, :black, :black, :black, :black, :black],
- #  	   [:clear, :clear, :clear, :clear, :clear, :clear, :clear, :clear],
- #  	   [:clear, :clear, :clear, :clear, :clear, :clear, :clear, :clear],
- #  	   [:clear, :clear, :clear, :clear, :clear, :clear, :clear, :clear],
- #  	   [:clear, :clear, :clear, :clear, :clear, :clear, :clear, :clear],
-	# 	   [:white, :white, :white, :white, :white, :white, :white, :white],
-	#      [:white, :white, :white, :white, :white, :white, :clear, :white] ]
-	# 	}
 	let(:chessboard) { Chessboard.new }
-	let(:rook) { chessboard.piece_at([7, 0]) }
-	let(:white_pawn) { chessboard.piece_at([6, 1]) }
-	let(:black_pawn) { chessboard.piece_at([1, 0]) }
+
+	describe '.create' do 
+		let(:piece) { Piece.create(:black, [4, 2], :king, chessboard) }
+		it 'creates the type of piece specified' do
+			expect(piece.type).to eq(:king)
+		end
+		it 'creates the color of piece specified' do
+			expect(piece.color).to eq(:black)
+		end
+		it 'sets the position specified' do
+			expect(piece.position).to eq([4, 2])
+		end
+	end
 
 	describe '#move_positions' do
+		let(:rook)       { chessboard.piece_at([7, 0]) }
+		let(:white_pawn) { chessboard.piece_at([6, 1]) }
+		let(:black_pawn) { chessboard.piece_at([1, 0]) }
+		
 		it 'only recognizes positions that would not leave King in check' do 
 			chessboard.clear_square([6, 4])
 			chessboard.set_square([4, 4], rook)

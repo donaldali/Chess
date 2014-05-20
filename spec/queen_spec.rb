@@ -1,6 +1,4 @@
-#
-require_relative '../lib/chess/queen'
-require_relative '../lib/chess/chessboard'
+require 'spec_helper'
 
 describe Queen do 
 	let(:piece_colors) {
@@ -14,7 +12,7 @@ describe Queen do
 	     [:white, :white, :white, :white, :white, :white, :clear, :white] ]
 		}
 	let(:chessboard) { Chessboard.new }
-	let(:queen) { chessboard.squares[7][3].piece }
+	let(:queen) { chessboard.piece_at([7, 3]) }
 
 	describe '#possible_positions' do
 		it 'stops before board boundary and friendly piece, but at enemy piece' do

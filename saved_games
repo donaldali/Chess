@@ -1,0 +1,276 @@
+---
+oneplay: "--- !ruby/object:ChessGame\nchessboard: &1 !ruby/object:Chessboard\n  squares:\n
+  \ - - !ruby/struct:Chessboard::Square\n      color: :light\n      position:\n      -
+  0\n      - 0\n      piece: !ruby/object:Rook\n        color: :black\n        position:\n
+  \       - 0\n        - 0\n        type: :rook\n        chessboard: *1\n        moved:
+  false\n    - !ruby/struct:Chessboard::Square\n      color: :dark\n      position:\n
+  \     - 0\n      - 1\n      piece: !ruby/object:Knight\n        color: :black\n
+  \       position:\n        - 0\n        - 1\n        type: :knight\n        chessboard:
+  *1\n    - !ruby/struct:Chessboard::Square\n      color: :light\n      position:\n
+  \     - 0\n      - 2\n      piece: !ruby/object:Bishop\n        color: :black\n
+  \       position:\n        - 0\n        - 2\n        type: :bishop\n        chessboard:
+  *1\n    - !ruby/struct:Chessboard::Square\n      color: :dark\n      position:\n
+  \     - 0\n      - 3\n      piece: !ruby/object:Queen\n        color: :black\n        position:\n
+  \       - 0\n        - 3\n        type: :queen\n        chessboard: *1\n    - !ruby/struct:Chessboard::Square\n
+  \     color: :light\n      position:\n      - 0\n      - 4\n      piece: !ruby/object:King\n
+  \       color: :black\n        position:\n        - 0\n        - 4\n        type:
+  :king\n        chessboard: *1\n        moved: false\n        castle_direction: []\n
+  \   - !ruby/struct:Chessboard::Square\n      color: :dark\n      position:\n      -
+  0\n      - 5\n      piece: !ruby/object:Bishop\n        color: :black\n        position:\n
+  \       - 0\n        - 5\n        type: :bishop\n        chessboard: *1\n    - !ruby/struct:Chessboard::Square\n
+  \     color: :light\n      position:\n      - 0\n      - 6\n      piece: !ruby/object:Knight\n
+  \       color: :black\n        position:\n        - 0\n        - 6\n        type:
+  :knight\n        chessboard: *1\n    - !ruby/struct:Chessboard::Square\n      color:
+  :dark\n      position:\n      - 0\n      - 7\n      piece: !ruby/object:Rook\n        color:
+  :black\n        position:\n        - 0\n        - 7\n        type: :rook\n        chessboard:
+  *1\n        moved: false\n  - - !ruby/struct:Chessboard::Square\n      color: :dark\n
+  \     position:\n      - 1\n      - 0\n      piece: !ruby/object:Pawn\n        color:
+  :black\n        position:\n        - 1\n        - 0\n        type: :pawn\n        chessboard:
+  *1\n        moved: false\n    - !ruby/struct:Chessboard::Square\n      color: :light\n
+  \     position:\n      - 1\n      - 1\n      piece: !ruby/object:Pawn\n        color:
+  :black\n        position:\n        - 1\n        - 1\n        type: :pawn\n        chessboard:
+  *1\n        moved: false\n    - !ruby/struct:Chessboard::Square\n      color: :dark\n
+  \     position:\n      - 1\n      - 2\n      piece: !ruby/object:Pawn\n        color:
+  :black\n        position:\n        - 1\n        - 2\n        type: :pawn\n        chessboard:
+  *1\n        moved: false\n    - !ruby/struct:Chessboard::Square\n      color: :light\n
+  \     position:\n      - 1\n      - 3\n      piece: !ruby/object:Pawn\n        color:
+  :black\n        position:\n        - 1\n        - 3\n        type: :pawn\n        chessboard:
+  *1\n        moved: false\n    - !ruby/struct:Chessboard::Square\n      color: :dark\n
+  \     position:\n      - 1\n      - 4\n      piece: !ruby/object:Pawn\n        color:
+  :black\n        position:\n        - 1\n        - 4\n        type: :pawn\n        chessboard:
+  *1\n        moved: false\n    - !ruby/struct:Chessboard::Square\n      color: :light\n
+  \     position:\n      - 1\n      - 5\n      piece: !ruby/object:Pawn\n        color:
+  :black\n        position:\n        - 1\n        - 5\n        type: :pawn\n        chessboard:
+  *1\n        moved: false\n    - !ruby/struct:Chessboard::Square\n      color: :dark\n
+  \     position:\n      - 1\n      - 6\n      piece: !ruby/object:Pawn\n        color:
+  :black\n        position:\n        - 1\n        - 6\n        type: :pawn\n        chessboard:
+  *1\n        moved: false\n    - !ruby/struct:Chessboard::Square\n      color: :light\n
+  \     position:\n      - 1\n      - 7\n      piece: !ruby/object:Pawn\n        color:
+  :black\n        position:\n        - 1\n        - 7\n        type: :pawn\n        chessboard:
+  *1\n        moved: false\n  - - !ruby/struct:Chessboard::Square\n      color: :light\n
+  \     position:\n      - 2\n      - 0\n      piece: !ruby/object:Piece\n        color:
+  :clear\n        position:\n        - 2\n        - 0\n        type: \n        chessboard:
+  \n    - !ruby/struct:Chessboard::Square\n      color: :dark\n      position:\n      -
+  2\n      - 1\n      piece: !ruby/object:Piece\n        color: :clear\n        position:
+  \n        type: \n        chessboard: \n    - !ruby/struct:Chessboard::Square\n
+  \     color: :light\n      position:\n      - 2\n      - 2\n      piece: !ruby/object:Piece\n
+  \       color: :clear\n        position:\n        - 2\n        - 2\n        type:
+  \n        chessboard: \n    - !ruby/struct:Chessboard::Square\n      color: :dark\n
+  \     position:\n      - 2\n      - 3\n      piece: !ruby/object:Piece\n        color:
+  :clear\n        position: \n        type: \n        chessboard: \n    - !ruby/struct:Chessboard::Square\n
+  \     color: :light\n      position:\n      - 2\n      - 4\n      piece: !ruby/object:Piece\n
+  \       color: :clear\n        position: \n        type: \n        chessboard: \n
+  \   - !ruby/struct:Chessboard::Square\n      color: :dark\n      position:\n      -
+  2\n      - 5\n      piece: !ruby/object:Piece\n        color: :clear\n        position:
+  \n        type: \n        chessboard: \n    - !ruby/struct:Chessboard::Square\n
+  \     color: :light\n      position:\n      - 2\n      - 6\n      piece: !ruby/object:Piece\n
+  \       color: :clear\n        position: \n        type: \n        chessboard: \n
+  \   - !ruby/struct:Chessboard::Square\n      color: :dark\n      position:\n      -
+  2\n      - 7\n      piece: !ruby/object:Piece\n        color: :clear\n        position:
+  \n        type: \n        chessboard: \n  - - !ruby/struct:Chessboard::Square\n
+  \     color: :dark\n      position:\n      - 3\n      - 0\n      piece: !ruby/object:Piece\n
+  \       color: :clear\n        position:\n        - 3\n        - 0\n        type:
+  \n        chessboard: \n    - !ruby/struct:Chessboard::Square\n      color: :light\n
+  \     position:\n      - 3\n      - 1\n      piece: !ruby/object:Piece\n        color:
+  :clear\n        position:\n        - 3\n        - 1\n        type: \n        chessboard:
+  \n    - !ruby/struct:Chessboard::Square\n      color: :dark\n      position:\n      -
+  3\n      - 2\n      piece: !ruby/object:Piece\n        color: :clear\n        position:
+  \n        type: \n        chessboard: \n    - !ruby/struct:Chessboard::Square\n
+  \     color: :light\n      position:\n      - 3\n      - 3\n      piece: !ruby/object:Piece\n
+  \       color: :clear\n        position:\n        - 3\n        - 3\n        type:
+  \n        chessboard: \n    - !ruby/struct:Chessboard::Square\n      color: :dark\n
+  \     position:\n      - 3\n      - 4\n      piece: !ruby/object:Piece\n        color:
+  :clear\n        position:\n        - 3\n        - 4\n        type: \n        chessboard:
+  \n    - !ruby/struct:Chessboard::Square\n      color: :light\n      position:\n
+  \     - 3\n      - 5\n      piece: !ruby/object:Piece\n        color: :clear\n        position:
+  \n        type: \n        chessboard: \n    - !ruby/struct:Chessboard::Square\n
+  \     color: :dark\n      position:\n      - 3\n      - 6\n      piece: !ruby/object:Piece\n
+  \       color: :clear\n        position: \n        type: \n        chessboard: \n
+  \   - !ruby/struct:Chessboard::Square\n      color: :light\n      position:\n      -
+  3\n      - 7\n      piece: !ruby/object:Piece\n        color: :clear\n        position:
+  \n        type: \n        chessboard: \n  - - !ruby/struct:Chessboard::Square\n
+  \     color: :light\n      position:\n      - 4\n      - 0\n      piece: !ruby/object:Piece\n
+  \       color: :clear\n        position:\n        - 4\n        - 0\n        type:
+  \n        chessboard: \n    - !ruby/struct:Chessboard::Square\n      color: :dark\n
+  \     position:\n      - 4\n      - 1\n      piece: !ruby/object:Piece\n        color:
+  :clear\n        position:\n        - 4\n        - 1\n        type: \n        chessboard:
+  \n    - !ruby/struct:Chessboard::Square\n      color: :light\n      position:\n
+  \     - 4\n      - 2\n      piece: !ruby/object:Piece\n        color: :clear\n        position:
+  \n        type: \n        chessboard: \n    - !ruby/struct:Chessboard::Square\n
+  \     color: :dark\n      position:\n      - 4\n      - 3\n      piece: !ruby/object:Piece\n
+  \       color: :clear\n        position:\n        - 4\n        - 3\n        type:
+  \n        chessboard: \n    - !ruby/struct:Chessboard::Square\n      color: :light\n
+  \     position:\n      - 4\n      - 4\n      piece: !ruby/object:Piece\n        color:
+  :clear\n        position:\n        - 4\n        - 4\n        type: \n        chessboard:
+  \n    - !ruby/struct:Chessboard::Square\n      color: :dark\n      position:\n      -
+  4\n      - 5\n      piece: !ruby/object:Piece\n        color: :clear\n        position:
+  \n        type: \n        chessboard: \n    - !ruby/struct:Chessboard::Square\n
+  \     color: :light\n      position:\n      - 4\n      - 6\n      piece: !ruby/object:Piece\n
+  \       color: :clear\n        position: \n        type: \n        chessboard: \n
+  \   - !ruby/struct:Chessboard::Square\n      color: :dark\n      position:\n      -
+  4\n      - 7\n      piece: !ruby/object:Piece\n        color: :clear\n        position:
+  \n        type: \n        chessboard: \n  - - !ruby/struct:Chessboard::Square\n
+  \     color: :dark\n      position:\n      - 5\n      - 0\n      piece: !ruby/object:Piece\n
+  \       color: :clear\n        position:\n        - 5\n        - 0\n        type:
+  \n        chessboard: \n    - !ruby/struct:Chessboard::Square\n      color: :light\n
+  \     position:\n      - 5\n      - 1\n      piece: !ruby/object:Piece\n        color:
+  :clear\n        position: \n        type: \n        chessboard: \n    - !ruby/struct:Chessboard::Square\n
+  \     color: :dark\n      position:\n      - 5\n      - 2\n      piece: !ruby/object:Knight\n
+  \       color: :white\n        position:\n        - 5\n        - 2\n        type:
+  :knight\n        chessboard: *1\n    - !ruby/struct:Chessboard::Square\n      color:
+  :light\n      position:\n      - 5\n      - 3\n      piece: !ruby/object:Piece\n
+  \       color: :clear\n        position: \n        type: \n        chessboard: \n
+  \   - !ruby/struct:Chessboard::Square\n      color: :dark\n      position:\n      -
+  5\n      - 4\n      piece: !ruby/object:Piece\n        color: :clear\n        position:
+  \n        type: \n        chessboard: \n    - !ruby/struct:Chessboard::Square\n
+  \     color: :light\n      position:\n      - 5\n      - 5\n      piece: !ruby/object:Piece\n
+  \       color: :clear\n        position: \n        type: \n        chessboard: \n
+  \   - !ruby/struct:Chessboard::Square\n      color: :dark\n      position:\n      -
+  5\n      - 6\n      piece: !ruby/object:Piece\n        color: :clear\n        position:
+  \n        type: \n        chessboard: \n    - !ruby/struct:Chessboard::Square\n
+  \     color: :light\n      position:\n      - 5\n      - 7\n      piece: !ruby/object:Piece\n
+  \       color: :clear\n        position: \n        type: \n        chessboard: \n
+  \ - - !ruby/struct:Chessboard::Square\n      color: :light\n      position:\n      -
+  6\n      - 0\n      piece: !ruby/object:Pawn\n        color: :white\n        position:\n
+  \       - 6\n        - 0\n        type: :pawn\n        chessboard: *1\n        moved:
+  false\n    - !ruby/struct:Chessboard::Square\n      color: :dark\n      position:\n
+  \     - 6\n      - 1\n      piece: !ruby/object:Pawn\n        color: :white\n        position:\n
+  \       - 6\n        - 1\n        type: :pawn\n        chessboard: *1\n        moved:
+  false\n    - !ruby/struct:Chessboard::Square\n      color: :light\n      position:\n
+  \     - 6\n      - 2\n      piece: !ruby/object:Pawn\n        color: :white\n        position:\n
+  \       - 6\n        - 2\n        type: :pawn\n        chessboard: *1\n        moved:
+  false\n    - !ruby/struct:Chessboard::Square\n      color: :dark\n      position:\n
+  \     - 6\n      - 3\n      piece: !ruby/object:Pawn\n        color: :white\n        position:\n
+  \       - 6\n        - 3\n        type: :pawn\n        chessboard: *1\n        moved:
+  false\n    - !ruby/struct:Chessboard::Square\n      color: :light\n      position:\n
+  \     - 6\n      - 4\n      piece: !ruby/object:Pawn\n        color: :white\n        position:\n
+  \       - 6\n        - 4\n        type: :pawn\n        chessboard: *1\n        moved:
+  false\n    - !ruby/struct:Chessboard::Square\n      color: :dark\n      position:\n
+  \     - 6\n      - 5\n      piece: !ruby/object:Pawn\n        color: :white\n        position:\n
+  \       - 6\n        - 5\n        type: :pawn\n        chessboard: *1\n        moved:
+  false\n    - !ruby/struct:Chessboard::Square\n      color: :light\n      position:\n
+  \     - 6\n      - 6\n      piece: !ruby/object:Pawn\n        color: :white\n        position:\n
+  \       - 6\n        - 6\n        type: :pawn\n        chessboard: *1\n        moved:
+  false\n    - !ruby/struct:Chessboard::Square\n      color: :dark\n      position:\n
+  \     - 6\n      - 7\n      piece: !ruby/object:Pawn\n        color: :white\n        position:\n
+  \       - 6\n        - 7\n        type: :pawn\n        chessboard: *1\n        moved:
+  false\n  - - !ruby/struct:Chessboard::Square\n      color: :dark\n      position:\n
+  \     - 7\n      - 0\n      piece: !ruby/object:Rook\n        color: :white\n        position:\n
+  \       - 7\n        - 0\n        type: :rook\n        chessboard: *1\n        moved:
+  false\n    - !ruby/struct:Chessboard::Square\n      color: :light\n      position:\n
+  \     - 7\n      - 1\n      piece: !ruby/object:Piece\n        color: :clear\n        position:
+  \n        type: \n        chessboard: \n    - !ruby/struct:Chessboard::Square\n
+  \     color: :dark\n      position:\n      - 7\n      - 2\n      piece: !ruby/object:Bishop\n
+  \       color: :white\n        position:\n        - 7\n        - 2\n        type:
+  :bishop\n        chessboard: *1\n    - !ruby/struct:Chessboard::Square\n      color:
+  :light\n      position:\n      - 7\n      - 3\n      piece: !ruby/object:Queen\n
+  \       color: :white\n        position:\n        - 7\n        - 3\n        type:
+  :queen\n        chessboard: *1\n    - !ruby/struct:Chessboard::Square\n      color:
+  :dark\n      position:\n      - 7\n      - 4\n      piece: !ruby/object:King\n        color:
+  :white\n        position:\n        - 7\n        - 4\n        type: :king\n        chessboard:
+  *1\n        moved: false\n        castle_direction: []\n    - !ruby/struct:Chessboard::Square\n
+  \     color: :light\n      position:\n      - 7\n      - 5\n      piece: !ruby/object:Bishop\n
+  \       color: :white\n        position:\n        - 7\n        - 5\n        type:
+  :bishop\n        chessboard: *1\n    - !ruby/struct:Chessboard::Square\n      color:
+  :dark\n      position:\n      - 7\n      - 6\n      piece: !ruby/object:Knight\n
+  \       color: :white\n        position:\n        - 7\n        - 6\n        type:
+  :knight\n        chessboard: *1\n    - !ruby/struct:Chessboard::Square\n      color:
+  :light\n      position:\n      - 7\n      - 7\n      piece: !ruby/object:Rook\n
+  \       color: :white\n        position:\n        - 7\n        - 7\n        type:
+  :rook\n        chessboard: *1\n        moved: false\n  players:\n    :white: Neo\n
+  \   :black: Mor\n  en_passant_position: \n  no_capture_or_pawn_moves: 5\nplayers:\n-
+  !ruby/struct:ChessGame::Player\n  color: :white\n  name: Neo\n- &2 !ruby/struct:ChessGame::Player\n
+  \ color: :black\n  name: Mor\ncur_player: *2\ngame_states_count:\n  ? \"---\\n-
+  - - :black\\n    - :rook\\n    - - 0\\n      - 0\\n  - - :black\\n    - :knight\\n\n
+  \   \\   - - 0\\n      - 1\\n  - - :black\\n    - :bishop\\n    - - 0\\n      -
+  2\\n  - -\n    :black\\n    - :queen\\n    - - 0\\n      - 3\\n  - - :black\\n    -
+  :king\\n    - -\n    0\\n      - 4\\n  - - :black\\n    - :bishop\\n    - - 0\\n
+  \     - 5\\n  - - :black\\n\n    \\   - :knight\\n    - - 0\\n      - 6\\n  - -
+  :black\\n    - :rook\\n    - - 0\\n      -\n    7\\n  - - :black\\n    - :pawn\\n
+  \   - - 1\\n      - 0\\n  - - :black\\n    - :pawn\\n\n    \\   - - 1\\n      -
+  1\\n  - - :black\\n    - :pawn\\n    - - 1\\n      - 2\\n  - - :black\\n\n    \\
+  \  - :pawn\\n    - - 1\\n      - 3\\n  - - :black\\n    - :pawn\\n    - - 1\\n      -\n
+  \   4\\n  - - :black\\n    - :pawn\\n    - - 1\\n      - 5\\n  - - :black\\n    -
+  :pawn\\n\n    \\   - - 1\\n      - 6\\n  - - :black\\n    - :pawn\\n    - - 1\\n
+  \     - 7\\n  - - :white\\n\n    \\   - :pawn\\n    - - 6\\n      - 0\\n  - - :white\\n
+  \   - :pawn\\n    - - 6\\n      -\n    1\\n  - - :white\\n    - :pawn\\n    - -
+  6\\n      - 2\\n  - - :white\\n    - :pawn\\n\n    \\   - - 6\\n      - 3\\n  -
+  - :white\\n    - :pawn\\n    - - 6\\n      - 4\\n  - - :white\\n\n    \\   - :pawn\\n
+  \   - - 6\\n      - 5\\n  - - :white\\n    - :pawn\\n    - - 6\\n      -\n    6\\n
+  \ - - :white\\n    - :pawn\\n    - - 6\\n      - 7\\n  - - :white\\n    - :rook\\n\n
+  \   \\   - - 7\\n      - 0\\n  - - :white\\n    - :knight\\n    - - 7\\n      -
+  1\\n  - -\n    :white\\n    - :bishop\\n    - - 7\\n      - 2\\n  - - :white\\n
+  \   - :queen\\n    -\n    - 7\\n      - 3\\n  - - :white\\n    - :king\\n    - -
+  7\\n      - 4\\n  - - :white\\n\n    \\   - :bishop\\n    - - 7\\n      - 5\\n  -
+  - :white\\n    - :knight\\n    - - 7\\n\n    \\     - 6\\n  - - :white\\n    - :rook\\n
+  \   - - 7\\n      - 7\\n- \\n- - []\\n  - []\\n-\n    :white\\n\"\n  : 2\n  ? \"---\\n-
+  - - :black\\n    - :rook\\n    - - 0\\n      - 0\\n  - - :black\\n    - :knight\\n\n
+  \   \\   - - 0\\n      - 1\\n  - - :black\\n    - :bishop\\n    - - 0\\n      -
+  2\\n  - -\n    :black\\n    - :queen\\n    - - 0\\n      - 3\\n  - - :black\\n    -
+  :king\\n    - -\n    0\\n      - 4\\n  - - :black\\n    - :bishop\\n    - - 0\\n
+  \     - 5\\n  - - :black\\n\n    \\   - :knight\\n    - - 0\\n      - 6\\n  - -
+  :black\\n    - :rook\\n    - - 0\\n      -\n    7\\n  - - :black\\n    - :pawn\\n
+  \   - - 1\\n      - 0\\n  - - :black\\n    - :pawn\\n\n    \\   - - 1\\n      -
+  1\\n  - - :black\\n    - :pawn\\n    - - 1\\n      - 2\\n  - - :black\\n\n    \\
+  \  - :pawn\\n    - - 1\\n      - 3\\n  - - :black\\n    - :pawn\\n    - - 1\\n      -\n
+  \   4\\n  - - :black\\n    - :pawn\\n    - - 1\\n      - 5\\n  - - :black\\n    -
+  :pawn\\n\n    \\   - - 1\\n      - 6\\n  - - :black\\n    - :pawn\\n    - - 1\\n
+  \     - 7\\n  - - :white\\n\n    \\   - :knight\\n    - - 5\\n      - 2\\n  - -
+  :white\\n    - :pawn\\n    - - 6\\n      -\n    0\\n  - - :white\\n    - :pawn\\n
+  \   - - 6\\n      - 1\\n  - - :white\\n    - :pawn\\n\n    \\   - - 6\\n      -
+  2\\n  - - :white\\n    - :pawn\\n    - - 6\\n      - 3\\n  - - :white\\n\n    \\
+  \  - :pawn\\n    - - 6\\n      - 4\\n  - - :white\\n    - :pawn\\n    - - 6\\n      -\n
+  \   5\\n  - - :white\\n    - :pawn\\n    - - 6\\n      - 6\\n  - - :white\\n    -
+  :pawn\\n\n    \\   - - 6\\n      - 7\\n  - - :white\\n    - :rook\\n    - - 7\\n
+  \     - 0\\n  - - :white\\n\n    \\   - :bishop\\n    - - 7\\n      - 2\\n  - -
+  :white\\n    - :queen\\n    - - 7\\n      -\n    3\\n  - - :white\\n    - :king\\n
+  \   - - 7\\n      - 4\\n  - - :white\\n    - :bishop\\n\n    \\   - - 7\\n      -
+  5\\n  - - :white\\n    - :knight\\n    - - 7\\n      - 6\\n  - -\n    :white\\n
+  \   - :rook\\n    - - 7\\n      - 7\\n- \\n- - []\\n  - []\\n- :black\\n\"\n  :
+  2\n  ? \"---\\n- - - :black\\n    - :rook\\n    - - 0\\n      - 0\\n  - - :black\\n
+  \   - :bishop\\n\n    \\   - - 0\\n      - 2\\n  - - :black\\n    - :queen\\n    -
+  - 0\\n      - 3\\n  - -\n    :black\\n    - :king\\n    - - 0\\n      - 4\\n  -
+  - :black\\n    - :bishop\\n    -\n    - 0\\n      - 5\\n  - - :black\\n    - :knight\\n
+  \   - - 0\\n      - 6\\n  - - :black\\n\n    \\   - :rook\\n    - - 0\\n      -
+  7\\n  - - :black\\n    - :pawn\\n    - - 1\\n      -\n    0\\n  - - :black\\n    -
+  :pawn\\n    - - 1\\n      - 1\\n  - - :black\\n    - :pawn\\n\n    \\   - - 1\\n
+  \     - 2\\n  - - :black\\n    - :pawn\\n    - - 1\\n      - 3\\n  - - :black\\n\n
+  \   \\   - :pawn\\n    - - 1\\n      - 4\\n  - - :black\\n    - :pawn\\n    - -
+  1\\n      -\n    5\\n  - - :black\\n    - :pawn\\n    - - 1\\n      - 6\\n  - -
+  :black\\n    - :pawn\\n\n    \\   - - 1\\n      - 7\\n  - - :black\\n    - :knight\\n
+  \   - - 2\\n      - 2\\n  - -\n    :white\\n    - :knight\\n    - - 5\\n      -
+  2\\n  - - :white\\n    - :pawn\\n    -\n    - 6\\n      - 0\\n  - - :white\\n    -
+  :pawn\\n    - - 6\\n      - 1\\n  - - :white\\n\n    \\   - :pawn\\n    - - 6\\n
+  \     - 2\\n  - - :white\\n    - :pawn\\n    - - 6\\n      -\n    3\\n  - - :white\\n
+  \   - :pawn\\n    - - 6\\n      - 4\\n  - - :white\\n    - :pawn\\n\n    \\   -
+  - 6\\n      - 5\\n  - - :white\\n    - :pawn\\n    - - 6\\n      - 6\\n  - - :white\\n\n
+  \   \\   - :pawn\\n    - - 6\\n      - 7\\n  - - :white\\n    - :rook\\n    - -
+  7\\n      -\n    0\\n  - - :white\\n    - :bishop\\n    - - 7\\n      - 2\\n  -
+  - :white\\n    - :queen\\n\n    \\   - - 7\\n      - 3\\n  - - :white\\n    - :king\\n
+  \   - - 7\\n      - 4\\n  - - :white\\n\n    \\   - :bishop\\n    - - 7\\n      -
+  5\\n  - - :white\\n    - :knight\\n    - - 7\\n\n    \\     - 6\\n  - - :white\\n
+  \   - :rook\\n    - - 7\\n      - 7\\n- \\n- - []\\n  - []\\n-\n    :white\\n\"\n
+  \ : 1\n  ? \"---\\n- - - :black\\n    - :rook\\n    - - 0\\n      - 0\\n  - - :black\\n
+  \   - :bishop\\n\n    \\   - - 0\\n      - 2\\n  - - :black\\n    - :queen\\n    -
+  - 0\\n      - 3\\n  - -\n    :black\\n    - :king\\n    - - 0\\n      - 4\\n  -
+  - :black\\n    - :bishop\\n    -\n    - 0\\n      - 5\\n  - - :black\\n    - :knight\\n
+  \   - - 0\\n      - 6\\n  - - :black\\n\n    \\   - :rook\\n    - - 0\\n      -
+  7\\n  - - :black\\n    - :pawn\\n    - - 1\\n      -\n    0\\n  - - :black\\n    -
+  :pawn\\n    - - 1\\n      - 1\\n  - - :black\\n    - :pawn\\n\n    \\   - - 1\\n
+  \     - 2\\n  - - :black\\n    - :pawn\\n    - - 1\\n      - 3\\n  - - :black\\n\n
+  \   \\   - :pawn\\n    - - 1\\n      - 4\\n  - - :black\\n    - :pawn\\n    - -
+  1\\n      -\n    5\\n  - - :black\\n    - :pawn\\n    - - 1\\n      - 6\\n  - -
+  :black\\n    - :pawn\\n\n    \\   - - 1\\n      - 7\\n  - - :black\\n    - :knight\\n
+  \   - - 2\\n      - 2\\n  - -\n    :white\\n    - :pawn\\n    - - 6\\n      - 0\\n
+  \ - - :white\\n    - :pawn\\n    - -\n    6\\n      - 1\\n  - - :white\\n    - :pawn\\n
+  \   - - 6\\n      - 2\\n  - - :white\\n\n    \\   - :pawn\\n    - - 6\\n      -
+  3\\n  - - :white\\n    - :pawn\\n    - - 6\\n      -\n    4\\n  - - :white\\n    -
+  :pawn\\n    - - 6\\n      - 5\\n  - - :white\\n    - :pawn\\n\n    \\   - - 6\\n
+  \     - 6\\n  - - :white\\n    - :pawn\\n    - - 6\\n      - 7\\n  - - :white\\n\n
+  \   \\   - :rook\\n    - - 7\\n      - 0\\n  - - :white\\n    - :knight\\n    -
+  - 7\\n      -\n    1\\n  - - :white\\n    - :bishop\\n    - - 7\\n      - 2\\n  -
+  - :white\\n    - :queen\\n\n    \\   - - 7\\n      - 3\\n  - - :white\\n    - :king\\n
+  \   - - 7\\n      - 4\\n  - - :white\\n\n    \\   - :bishop\\n    - - 7\\n      -
+  5\\n  - - :white\\n    - :knight\\n    - - 7\\n\n    \\     - 6\\n  - - :white\\n
+  \   - :rook\\n    - - 7\\n      - 7\\n- \\n- - []\\n  - []\\n-\n    :black\\n\"\n
+  \ : 1\ninput:\n  :option: \n  :from: \n  :to: \n"

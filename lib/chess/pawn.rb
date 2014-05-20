@@ -1,6 +1,4 @@
-require_relative 'piece'
-
-#
+# Class to define the properties and movement of a Pawn
 class Pawn < Piece
 	attr_accessor :moved
 
@@ -9,6 +7,7 @@ class Pawn < Piece
 		@moved = false
 	end
 	
+  # Determine positions a Pawn can go to on a chessboard the Pawn is on
 	def possible_positions
 		piece_colors = @chessboard.get_piece_colors
 
@@ -19,6 +18,12 @@ class Pawn < Piece
 		positions
 	end
 
+  # *********************************************
+  # ************  PRIVATE METHODS  **************
+  # *********************************************
+	private
+
+  # Determine positions a Pawn can go to straight in front of it
 	def forward_positions(piece_colors, positions, row_change)
 		next_position = add_positions(@position, [row_change, 0])
 		if board_position?(next_position) && 
@@ -32,11 +37,13 @@ class Pawn < Piece
 		end
 	end
 
+  # Determine positions a Pawn can go to in its forward diagonals
 	def diagonal_positions(piece_colors, positions, row_change)
 		one_diagonal_position(piece_colors, positions, row_change, -1)
 		one_diagonal_position(piece_colors, positions, row_change,  1)
 	end
 
+  # Determine position a Pawn can go to in one forward diagonal
 	def one_diagonal_position(piece_colors, positions, row_change, col_change)
 		next_position = add_positions(@position, [row_change, col_change])
 		if board_position?(next_position) && 

@@ -1,6 +1,5 @@
-require_relative '../lib/chess/chessboard'
+require 'spec_helper'
 
-#
 describe Chessboard do 
 	let(:chessboard) { Chessboard.new }
 	before(:each) do
@@ -8,40 +7,63 @@ describe Chessboard do
 		allow(Chess).to receive(:print)
 	end
 
-	def clear_board
-		clear_board = Chessboard.new
-  	(0..Chess::SIZE - 1).each do |row|
-  		(0..Chess::SIZE - 1).each do |col|
-  			clear_board.clear_square([row, col])
-  		end
-  	end
-  	clear_board
+	shared_examples_for 'initial board' do |board|
+		it 'has black pieces in eighth rank' do
+			test_initial_end_rank(board, 0, :black)
+		end
+		it 'has black pawns in seventh rank' do
+			test_initial_pawn_rank(board, 1, :black)
+		end
+		it 'has no pieces in sixth to third ranks' do
+			(2..5).each do |row|
+				board.squares[row].each do |square|
+					expect(square.piece.color).to eq(:clear)
+				end
+			end
+		end
+		it 'has white pawns in the second rank' do
+			test_initial_pawn_rank(board, 6, :white)
+		end
+		it 'has white pieces in first rank' do
+			test_initial_end_rank(board, 7, :white)
+		end
 	end
 
-	def castling_setup
-		chessboard.clear_square([7, 1])
-		chessboard.clear_square([7, 2])
-		chessboard.clear_square([7, 3])
-		chessboard.clear_square([7, 5])
-		chessboard.clear_square([7, 6])
+	def test_initial_pawn_rank(board, row, color)
+		board.squares[row].each do |square|
+			expect(square.piece.color).to eq(color)
+			expect(square.piece.type).to  eq(:pawn)
+		end
+	end
 
-		chessboard.clear_square([0, 1])
-		chessboard.clear_square([0, 2])
-		chessboard.clear_square([0, 3])
-		chessboard.clear_square([0, 5])
-		chessboard.clear_square([0, 6])
+	def test_initial_end_rank(board, row, color)
+		board.squares[row].each do |square|
+			expect(square.piece.color).to eq(color)
+		end
+		expect(board.piece_at([row, 0]).type).to eq(:rook)
+		expect(board.piece_at([row, 1]).type).to eq(:knight)
+		expect(board.piece_at([row, 2]).type).to eq(:bishop)
+		expect(board.piece_at([row, 3]).type).to eq(:queen)
+		expect(board.piece_at([row, 4]).type).to eq(:king)
+		expect(board.piece_at([row, 5]).type).to eq(:bishop)
+		expect(board.piece_at([row, 6]).type).to eq(:knight)
+		expect(board.piece_at([row, 7]).type).to eq(:rook)
 	end
 
 	describe '#new' do 
-		it "creates an #{Chessboard::SIZE} X #{Chessboard::SIZE} array of squares" do 
-			expect(chessboard.squares.size).to eq(Chessboard::SIZE)
+		it "creates an #{Chess::SIZE} X #{Chess::SIZE} array of squares" do 
+			expect(chessboard.squares.size).to eq(Chess::SIZE)
 			chessboard.squares.each do |row|
-				expect(row.size).to eq(Chessboard::SIZE)
+				expect(row.size).to eq(Chess::SIZE)
 				row.each do |square|
 					expect(square).to be_instance_of(Chessboard::Square)
 				end
 			end
 		end
+
+		chessboard1 = Chessboard.new
+		it_behaves_like 'initial board', chessboard1
+
 		it 'initializes en passant' do 
 			expect(chessboard.en_passant_position).to be_nil
 		end
@@ -50,20 +72,45 @@ describe Chessboard do
 		end
 	end
 
+	describe '#reset_board' do
+		chessboard1 = Chessboard.new
+		chessboard1.move([6, 3], [5, 3])
+		chessboard1.reset_board
+		it_behaves_like 'initial board', chessboard1
+
+		it 'resets en_passant_position' do 
+			chessboard.en_passant_position = [3, 3]
+			chessboard.reset_board
+			expect(chessboard.en_passant_position).to be_nil
+		end
+		it 'resets no_capture_or_pawn_moves' do
+			chessboard.no_capture_or_pawn_moves = 42
+			chessboard.reset_board
+			expect(chessboard.no_capture_or_pawn_moves).to be_zero
+		end
+	end
+
+	describe '#piece_at' do
+		it 'retrieves the piece at a given position' do
+			expect(chessboard.piece_at([7, 4]).type).to eq(:king)
+			expect(chessboard.piece_at([7, 4]).color).to eq(:white)
+		end
+	end
+
 	describe '#set_square' do
 		it 'sets the piece in a square' do
 			piece = Piece.new(:clear)
-			expect(chessboard.squares[3][3].piece.position).to be_nil
+			expect(chessboard.piece_at([3, 3]).position).to be_nil
 			chessboard.set_square([3, 3], piece)
-			expect(chessboard.squares[3][3].piece.position).to eq([3, 3])
+			expect(chessboard.piece_at([3, 3]).position).to eq([3, 3])
 		end
 	end
 
 	describe '#clear_square' do
 		it 'clears the piece in a square' do
-			expect(chessboard.squares[0][0].piece.type).to eq(:rook)
+			expect(chessboard.piece_at([0, 0]).type).to eq(:rook)
 			chessboard.clear_square([0, 0])
-			expect(chessboard.squares[0][0].piece.type).to be_nil
+			expect(chessboard.piece_at([0, 0]).type).to be_nil
 		end
 	end
 
@@ -92,9 +139,6 @@ describe Chessboard do
 				[ [2, 0], [2, 1], [2, 2], [2, 3], [2, 4], [2, 5], [2, 6], [2, 7], 
 				  [3, 0], [3, 1], [3, 2], [3, 3], [3, 4], [3, 5], [3, 6], [3, 7] ])
 		end
-
-		#  **** MORE TESTS ***
-		# it 'gives initial positions attacked'
 	end
 
 	describe '#king_position' do
@@ -117,7 +161,7 @@ describe Chessboard do
 	end
 
 	describe '#move_piece' do 
-		it 'moves a piece at a location' do 
+		it 'moves a piece from on position to another' do 
 			expect(chessboard.piece_at([1, 0]).type).to eq(:pawn)
 			expect(chessboard.move_piece([0, 0], [1, 0]).type).to eq(:pawn)
 			expect(chessboard.piece_at([1, 0]).type).to eq(:rook)
@@ -158,7 +202,6 @@ describe Chessboard do
 			it 'moves piece to new position' do
 				from_piece = chessboard.piece_at(from)
 				chessboard.move(from, to)
-				# expect(chessboard.piece_at(to)).to be(from_piece)
 				expect(chessboard.piece_at(to)).to eq(from_piece)
 			end
 			it "sets piece's position to new position" do
@@ -167,14 +210,13 @@ describe Chessboard do
 				expect(from_piece.position).to eq(to)
 			end
 			it 'clears the old position' do 
-				from_piece = chessboard.piece_at(from)
 				chessboard.move(from, to)
 				expect(chessboard.clear_position?(from)).to be_true
 			end
 		end
 
 		context 'when a simple non-pawn move is made' do 
-			it_should_behave_like "moving a piece", [7, 1], [5, 0]
+			it_behaves_like "moving a piece", [7, 1], [5, 0]
 			it 'sets en passant positon to nil' do
 				chessboard.en_passant_position = [2, 1]
 				chessboard.move([7, 1], [5, 0])
@@ -185,7 +227,7 @@ describe Chessboard do
 			end
 		end
 		context 'when an opponent piece is captured' do 
-			it_should_behave_like "moving a piece", [6, 0], [1, 0]
+			it_behaves_like "moving a piece", [6, 0], [1, 0]
 			it 'resets no capture or pawn move count' do
 				chessboard.no_capture_or_pawn_moves = 1
 				chessboard.move([6, 0], [1, 0])
@@ -193,7 +235,7 @@ describe Chessboard do
 			end
 		end
 		context 'when a pawn moves' do 
-			it_should_behave_like "moving a piece", [6, 1], [5, 1]
+			it_behaves_like "moving a piece", [6, 1], [5, 1]
 			it 'resets no capture or pawn move count' do 
 				chessboard.no_capture_or_pawn_moves = 1
 				chessboard.move([6, 1], [5, 1])
@@ -254,7 +296,7 @@ describe Chessboard do
 	  	expect(chessboard.checkmate?(:white)).to be_false
 	  	expect(chessboard.checkmate?(:black)).to be_false
 		end
-		it 'handles stalemate with all castling conditions' do
+		it 'handles checkmate with all castling conditions' do
 		  castling_setup
 	  	expect(chessboard.checkmate?(:white)).to be_false
 	  	expect(chessboard.checkmate?(:black)).to be_false

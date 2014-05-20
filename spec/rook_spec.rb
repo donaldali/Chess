@@ -1,6 +1,4 @@
-#
-require_relative '../lib/chess/rook'
-require_relative '../lib/chess/chessboard'
+require 'spec_helper'
 
 describe Rook do 
 	let(:piece_colors) {
@@ -14,7 +12,7 @@ describe Rook do
 	     [:white, :white, :white, :white, :white, :white, :clear, :white] ]
 		}
 	let(:chessboard) { Chessboard.new }
-	let(:rook) { chessboard.squares[7][7].piece }
+	let(:rook) { chessboard.piece_at([7, 7]) }
 
 	describe '#possible_positions' do
 		it 'stops before board boundary and friendly piece, but at enemy piece' do

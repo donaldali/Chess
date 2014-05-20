@@ -1,6 +1,4 @@
-#
-require_relative '../lib/chess/king'
-require_relative '../lib/chess/chessboard'
+require 'spec_helper'
 
 describe King do 
 	let(:piece_colors) {
@@ -14,21 +12,10 @@ describe King do
 	     [:white, :clear, :clear, :clear, :white, :clear, :clear, :white] ]
 		}
 	let(:chessboard) { Chessboard.new }
-	let(:king) { chessboard.squares[7][4].piece }
+	let(:king) { chessboard.piece_at([7, 4]) }
 
 	before(:each) do
-		# allow(chessboard).to receive(:get_piece_colors).and_return(piece_colors)
-		chessboard.clear_square([7, 1])
-		chessboard.clear_square([7, 2])
-		chessboard.clear_square([7, 3])
-		chessboard.clear_square([7, 5])
-		chessboard.clear_square([7, 6])
-
-		chessboard.clear_square([0, 1])
-		chessboard.clear_square([0, 2])
-		chessboard.clear_square([0, 3])
-		chessboard.clear_square([0, 5])
-		chessboard.clear_square([0, 6])
+		castling_setup
 	end
 
 	describe '#possible_positions' do

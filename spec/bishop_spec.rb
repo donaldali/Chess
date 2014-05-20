@@ -1,6 +1,4 @@
-#
-require_relative '../lib/chess/bishop'
-require_relative '../lib/chess/chessboard'
+require 'spec_helper'
 
 describe Bishop do 
 	let(:piece_colors) {
@@ -14,7 +12,7 @@ describe Bishop do
 	     [:white, :white, :white, :white, :white, :white, :clear, :white] ]
 		}
 	let(:chessboard) { Chessboard.new }
-	let(:bishop) { chessboard.squares[7][5].piece }
+	let(:bishop) { chessboard.piece_at([7, 5]) }
 
 	describe '#possible_positions' do
 		it 'stops before board boundary and friendly piece, but at enemy piece' do

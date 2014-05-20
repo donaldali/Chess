@@ -1,6 +1,4 @@
-#
-require_relative '../lib/chess/knight'
-require_relative '../lib/chess/chessboard'
+require 'spec_helper'
 
 describe Knight do 
 	let(:piece_colors) {
@@ -14,7 +12,7 @@ describe Knight do
 	     [:white, :white, :white, :white, :white, :white, :clear, :white] ]
 		}
 	let(:chessboard) { Chessboard.new }
-	let(:knight) { chessboard.squares[7][6].piece }
+	let(:knight) { chessboard.piece_at([7, 6]) }
 
 	describe '#possible_positions' do
 		it 'jumps onto blank and enemy pieces, but not on friendly pieces' do

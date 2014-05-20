@@ -1,6 +1,4 @@
-#
-require_relative '../lib/chess/pawn'
-require_relative '../lib/chess/chessboard'
+require 'spec_helper'
 
 describe Pawn do 
 	let(:piece_colors) {
@@ -14,8 +12,8 @@ describe Pawn do
 	     [:white, :white, :white, :white, :white, :white, :white, :white] ]
 		}
 	let(:chessboard) { Chessboard.new }
-	let(:white_pawn) { chessboard.squares[6][0].piece }
-	let(:black_pawn) { chessboard.squares[1][0].piece }
+	let(:white_pawn) { chessboard.piece_at([6, 0]) }
+	let(:black_pawn) { chessboard.piece_at([1, 0]) }
 
 	before(:each) do
 		allow(chessboard).to receive(:get_piece_colors).and_return(piece_colors)
