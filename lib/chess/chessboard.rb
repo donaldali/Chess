@@ -1,19 +1,19 @@
 # Class to model the state of a chessboard an operations on the chessboard
 # during a game of chess
 class Chessboard
-	Square = Struct.new(:color, :position, :piece)
+  Square = Struct.new(:color, :position, :piece)
 
-	PIECES = { white: { king:   "\u2654", queen:  "\u2655", rook: "\u2656",
-	                    bishop: "\u2657", knight: "\u2658", pawn: "\u2659" },
-	           black: { king:   "\u265a", queen:  "\u265b", rook: "\u265c",
-	                    bishop: "\u265d", knight: "\u265e", pawn: "\u265f" },
-	           clear: { } }
+  PIECES = { white: { king:   "\u2654", queen:  "\u2655", rook: "\u2656",
+                      bishop: "\u2657", knight: "\u2658", pawn: "\u2659" },
+             black: { king:   "\u265a", queen:  "\u265b", rook: "\u265c",
+                      bishop: "\u265d", knight: "\u265e", pawn: "\u265f" },
+             clear: { } }
 
   attr_accessor :en_passant_position, :no_capture_or_pawn_moves, :squares, :players
 
   def initialize(players = { white: "White Player", black: "Black Player" })
-  	@squares = generate_squares
-  	set_squares_color_position
+    @squares = generate_squares
+    set_squares_color_position
     @players = players
     reset_board
   end
@@ -181,89 +181,89 @@ class Chessboard
 
   # Create all blank squares for the chessboard
   def generate_squares
-  	squares = []
-  	Chess::SIZE.times do 
-  		new_row = []
-  		Chess::SIZE.times { new_row << Square.new }
-  		squares << new_row
-  	end
-  	squares
+    squares = []
+    Chess::SIZE.times do 
+      new_row = []
+      Chess::SIZE.times { new_row << Square.new }
+      squares << new_row
+    end
+    squares
   end
 
   # Set the colors (light or dark) of all chessboard squares
   def set_squares_color_position
-  	switch_color = ->(color){ color == :light ? :dark : :light }
-  	color = :light
-  	@squares.each_with_index do |row, row_index|
-  		row.each_with_index do |square, col_index|
-  			square.color = color 
-  			color = switch_color.call(color)
-  			square.position = [row_index, col_index] 
-  		end
-  		color = switch_color.call(color)
-  	end
+    switch_color = ->(color){ color == :light ? :dark : :light }
+    color = :light
+    @squares.each_with_index do |row, row_index|
+      row.each_with_index do |square, col_index|
+        square.color = color 
+        color = switch_color.call(color)
+        square.position = [row_index, col_index] 
+      end
+      color = switch_color.call(color)
+    end
   end
 
   # Reset the pieces of the chessboard to their initial configuartion
   def reset_square_pieces
-  	set_end_rows
-  	set_pawn_rows
-  	set_blank_rows
+    set_end_rows
+    set_pawn_rows
+    set_blank_rows
   end
 
   # Reset the top and bottom chessboard rows (ranks) to their initial configuration
   def set_end_rows
-  	set_an_end_row(:black, 0, [:rook, :knight, :bishop, :queen, :king, :bishop, :knight, :rook])
-  	set_an_end_row(:white, 7, [:rook, :knight, :bishop, :queen, :king, :bishop, :knight, :rook])
+    set_an_end_row(:black, 0, [:rook, :knight, :bishop, :queen, :king, :bishop, :knight, :rook])
+    set_an_end_row(:white, 7, [:rook, :knight, :bishop, :queen, :king, :bishop, :knight, :rook])
   end
 
   # Reset the top or bottom chessboard row (rank) to its initial configuration
   def set_an_end_row(piece_color, row, piece_types)
-  	(0..Chess::SIZE - 1).each do |col|
-  		piece = Piece.create(piece_color, [row, col], piece_types[col], self)
-  		@squares[row][col].piece = piece
-  	end
+    (0..Chess::SIZE - 1).each do |col|
+      piece = Piece.create(piece_color, [row, col], piece_types[col], self)
+      @squares[row][col].piece = piece
+    end
   end
 
   # Reset the rows that initially contain pawns to have pawns
   def set_pawn_rows
-  	set_a_pawn_row(:black, 1)
-  	set_a_pawn_row(:white, 6)
+    set_a_pawn_row(:black, 1)
+    set_a_pawn_row(:white, 6)
   end
 
   # Reset a row that initially contains pawns to have pawns
   def set_a_pawn_row(piece_color, row)
-  	(0..Chess::SIZE - 1).each do |col|
-  		piece = Piece.create(piece_color, [row, col], :pawn, self)
-  		@squares[row][col].piece = piece
-  	end
+    (0..Chess::SIZE - 1).each do |col|
+      piece = Piece.create(piece_color, [row, col], :pawn, self)
+      @squares[row][col].piece = piece
+    end
   end
 
   # Reset the rows that are initially blank to have no pieces
   def set_blank_rows
-  	(2..5).each do |row|
-  		set_a_blank_row(row)
-  	end
+    (2..5).each do |row|
+      set_a_blank_row(row)
+    end
   end
 
   # Reset a row that is initially blank to have no pieces
   def set_a_blank_row(row)
-  	(0..Chess::SIZE - 1).each do |col|
-  		piece = Piece.new(:clear)
-  		@squares[row][col].piece = piece
-  	end
+    (0..Chess::SIZE - 1).each do |col|
+      piece = Piece.new(:clear)
+      @squares[row][col].piece = piece
+    end
   end
 
   # Get an array containing all the pieces a player has on the chessboard
   def player_pieces(player)
-  	@squares.map do |row|
-  		row.map { |square| square.piece }
-  	end.flatten.select { |piece| piece.color == player }
+    @squares.map do |row|
+      row.map { |square| square.piece }
+    end.flatten.select { |piece| piece.color == player }
   end
 
   # Get the square at a position of the chessboard
   def square_at(position)
-  	@squares[position[0]][position[1]]
+    @squares[position[0]][position[1]]
   end
 
   # Determine if a player has no valid move (which leads to an end game situation)
@@ -419,10 +419,10 @@ class Chessboard
 
   # Set the colors for the black and white pieces of the game and for the 
   # dark and light squares of the chessboard
-	def chessboard_color_code(square_color, piece_color)
-		square_color_code = { light: "44", dark: "40" }
-		piece_color_code  = { white: "37", black: "36", clear: "32" }
-		"1;#{ square_color_code[square_color] };#{ piece_color_code[piece_color] }"
-	end
+  def chessboard_color_code(square_color, piece_color)
+    square_color_code = { light: "44", dark: "40" }
+    piece_color_code  = { white: "37", black: "36", clear: "32" }
+    "1;#{ square_color_code[square_color] };#{ piece_color_code[piece_color] }"
+  end
 
 end

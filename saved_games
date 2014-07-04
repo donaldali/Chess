@@ -178,9 +178,9 @@ oneplay: "--- !ruby/object:ChessGame\nchessboard: &1 !ruby/object:Chessboard\n  
   :light\n      position:\n      - 7\n      - 7\n      piece: !ruby/object:Rook\n
   \       color: :white\n        position:\n        - 7\n        - 7\n        type:
   :rook\n        chessboard: *1\n        moved: false\n  players:\n    :white: Neo\n
-  \   :black: Mor\n  en_passant_position: \n  no_capture_or_pawn_moves: 5\nplayers:\n-
+  \   :black: Morpheus\n  en_passant_position: \n  no_capture_or_pawn_moves: 5\nplayers:\n-
   !ruby/struct:ChessGame::Player\n  color: :white\n  name: Neo\n- &2 !ruby/struct:ChessGame::Player\n
-  \ color: :black\n  name: Mor\ncur_player: *2\ngame_states_count:\n  ? \"---\\n-
+  \ color: :black\n  name: Morpheus\ncur_player: *2\ngame_states_count:\n  ? \"---\\n-
   - - :black\\n    - :rook\\n    - - 0\\n      - 0\\n  - - :black\\n    - :knight\\n\n
   \   \\   - - 0\\n      - 1\\n  - - :black\\n    - :bishop\\n    - - 0\\n      -
   2\\n  - -\n    :black\\n    - :queen\\n    - - 0\\n      - 3\\n  - - :black\\n    -
